@@ -21,6 +21,7 @@ engine = create_engine(
     echo=True  # 设置为 True 以查看 SQL 查询日志，调试时使用
 )
 
+
 def get_db():
     db = SessionLocal()
     try:
@@ -31,3 +32,6 @@ def get_db():
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 Base = declarative_base()
+
+# 创建数据库表
+Base.metadata.create_all(bind=engine)

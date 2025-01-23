@@ -1,11 +1,11 @@
 from fastapi import APIRouter
 
-shop = APIRouter()
+role = APIRouter()
 
-@shop.get("/food")
+@role.get("/roles/")
 def shop_root():
     return {"Hello": "World"}
 
-@shop.get("/bad")
+@role.get("/bad")
 def shop_bad():
     return {"shop": "bad"}
