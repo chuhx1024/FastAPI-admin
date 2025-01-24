@@ -2,7 +2,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-from typing import Union
 
 # 替换为你的 MariaDB 用户名、密码、主机和数据库名称
 

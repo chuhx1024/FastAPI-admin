@@ -1,36 +1,14 @@
 from fastapi import APIRouter
-from database.database import Base
-
-from pydantic import BaseModel
-
-
 from sqlalchemy.orm import Session
-
 from fastapi import APIRouter, Depends, HTTPException
 from database.database import get_db
-
-from database.models import User
-
 from schemas import ResponseModel
-from typing import Any
+from .models import User
+from .schemas import UserCreate, UserResponse
 
-
-from schemas.user import UserResponse 
-
-# from database.model import User  # 导入 User 类
 user = APIRouter()
 
-
-
-class UserCreate(BaseModel):
-    username: str
-    email: str
-    full_name: str
-    password: str
-
-
-
-@user.post("/users/", response_model=ResponseModel, summary="新建用户",)
+@user.post("/users/", response_model=ResponseModel[UserResponse], summary="新建用户",)
 def create_user(user: UserCreate, db: Session = Depends(get_db)):
     db_user = User(
         username=user.username,
@@ -55,7 +33,7 @@ def create_user(user: UserCreate, db: Session = Depends(get_db)):
         msg="用户创建成功!"
     )
 
-@user.get("/users/{user_id}", response_model=ResponseModel, summary="通过id获取用户信息",)
+@user.get("/users/{user_id}", response_model=ResponseModel[UserResponse], summary="通过id获取用户信息",)
 def get_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.id == user_id).first()
     if db_user is None:
@@ -69,7 +47,7 @@ def get_user(user_id: int, db: Session = Depends(get_db)):
     )
     # return db_user
 
-@user.get("/users/", response_model=ResponseModel, summary="获取用户列表",)
+@user.get("/users/", response_model=ResponseModel[list[UserResponse]], summary="获取用户列表",)
 def get_users(db: Session = Depends(get_db)):
     users = db.query(User).all()
     # user_list = [
