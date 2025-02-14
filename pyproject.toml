@@ -9,7 +9,9 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "fastapi (>=0.115.8,<0.116.0)",
-    "uvicorn[standard] (>=0.34.0,<0.35.0)"
+    "uvicorn[standard] (>=0.34.0,<0.35.0)",
+    "sqlalchemy (>=2.0.38,<3.0.0)",
+    "mysql-connector-python (>=9.2.0,<10.0.0)"
 ]
 
 

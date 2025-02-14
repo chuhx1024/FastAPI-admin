@@ -1,15 +1,13 @@
-from typing import Union
-
 from fastapi import FastAPI
+from database.database import create_tables
+
+from apps.user.urls import user
+
+# 创建数据库表
+create_tables()
 
 app = FastAPI()
 
+API_PREFIX = "/api"
 
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+app.include_router(user, prefix=f"{API_PREFIX}/user", tags=["用户中心"])
