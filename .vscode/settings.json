@@ -1,0 +1,12 @@
+{
+
+    "database-client.autoSync": true, // 插件名称: MySQL 自动同步数据库
+
+    "python.languageServer": "Pylance", // 插件名称: Pylance  python启用类型检查
+    "python.analysis.typeCheckingMode": "standard", 
+
+    
+    "editor.formatOnSave": true,
+    "editor.defaultFoldingRangeProvider": "ms-python.black-formatter",
+
+}
