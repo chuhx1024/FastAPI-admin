@@ -1,6 +1,9 @@
 from sqlalchemy import Column, Integer, String
 from database.database import Base
 
+from sqlalchemy.orm import relationship
+from ..user_role_association.models import user_role_association
+
 
 class User(Base):
     __tablename__ = "users"
@@ -10,3 +13,7 @@ class User(Base):
     email = Column(String(128), index=True)
     full_name = Column(String(128), index=True)
     hashed_password = Column(String(128))
+
+    roles = relationship(
+        "Role", secondary=user_role_association, back_populates="users"
+    )
