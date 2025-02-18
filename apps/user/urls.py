@@ -6,6 +6,7 @@ from schemas import ResponseModel
 from .models import User
 from .schemas import UserCreate, UserResponse
 from common.passlib_utils import hash_password
+from common.jwt_utils import get_current_user, oauth2_scheme
 
 
 user = APIRouter()
@@ -86,8 +87,11 @@ def get_user(
     "/users/",
     response_model=ResponseModel[list[UserResponse]],
     summary="获取用户列表",
+    dependencies=[Depends(oauth2_scheme)],
 )
-def get_users(db: Session = Depends(get_db)):
+def get_users(
+    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+):
     users = db.query(User).all()
     # user_list = [
     #     dict(
