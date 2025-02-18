@@ -13,7 +13,18 @@ class ResponseModel(BaseModel, Generic[T]):
     msg: Optional[str] = Field("获取用户信息成功", alias="msg", description="状态信息")
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+
+# 必须在 返回token 的接口 返回 access_token FastApi的文档登录才能找到 token  要不就是 undifined
+class TokenResponseModel(BaseModel, Generic[T]):
+    code: int = Field(200, alias="code", description="状态码")
+    data: T
+    access_token: str
+    msg: Optional[str] = Field("获取用户信息成功", alias="msg", description="状态信息")
+
+    class Config:
+        from_attributes = True
 
 
 class CustomErrorResponse(BaseModel):

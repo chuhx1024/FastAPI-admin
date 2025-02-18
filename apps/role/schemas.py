@@ -10,5 +10,4 @@ class RoleResponse(BaseModel):
     rolename: str
 
     class Config:
-        orm_mode = True
         from_attributes = True  # 添加这一行

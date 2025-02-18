@@ -1,6 +1,10 @@
 from fastapi import APIRouter, Body, Depends, HTTPException
 from .schemas import LoginRequest, LoginResponse
-from schemas.response_models import ResponseModel, CustomHTTPException
+from schemas.response_models import (
+    ResponseModel,
+    CustomHTTPException,
+    TokenResponseModel,
+)
 from sqlalchemy.orm import Session
 from database.database import get_db
 from ..user.models import User
@@ -43,8 +47,9 @@ def login(
         )
     access_token = create_access_token(data={"sub": user.username})
     response_data = {"access_token": access_token, "token_type": "bearer"}
-    return ResponseModel[LoginResponse](
+    return TokenResponseModel[LoginResponse](
         code=200,
         data=LoginResponse(**response_data),
+        access_token=access_token,
         msg="登录成功成功!",
     )

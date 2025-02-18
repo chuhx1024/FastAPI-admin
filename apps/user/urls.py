@@ -90,7 +90,8 @@ def get_user(
     dependencies=[Depends(oauth2_scheme)],
 )
 def get_users(
-    db: Session = Depends(get_db), current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
 ):
     users = db.query(User).all()
     # user_list = [

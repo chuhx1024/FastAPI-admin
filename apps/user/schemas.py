@@ -16,5 +16,4 @@ class UserResponse(BaseModel):
     # hashed_password: str = Field('默认密码', alias="hashed_password")
 
     class Config:
-        orm_mode = True
         from_attributes = True  # 添加这一行
