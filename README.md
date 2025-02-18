@@ -24,5 +24,7 @@
     ```
 6. 定义 main.py 后启动项目
     ```
+    source venv/bin/activate # macOS/Linux
+    source venv/Scripts/activate # Windows
     uvicorn main:app --reload
     ```

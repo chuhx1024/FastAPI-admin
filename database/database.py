@@ -9,7 +9,7 @@ from sqlalchemy.orm import sessionmaker
 MYSQL_USERNAME: str = "root"
 MYSQL_PASSWORD: str = "admin12345"
 MYSQL_HOST = "127.0.0.1:3306"
-MYSQL_DATABASE: str = "FastAdmin0"
+MYSQL_DATABASE: str = "FastAdmin"
 
 # mysql地址
 SQLALCHEMY_DATABASE_URL = (
