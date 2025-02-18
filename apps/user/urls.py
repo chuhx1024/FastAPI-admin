@@ -5,6 +5,7 @@ from database.database import get_db
 from schemas import ResponseModel
 from .models import User
 from .schemas import UserCreate, UserResponse
+from common.passlib_utils import hash_password
 
 
 user = APIRouter()
@@ -37,7 +38,9 @@ def create_user(
         "username": user.username,
         "email": user.email,
         "full_name": user.full_name,
-        "hashed_password": user.password,  # In a real application, hash the password
+        "hashed_password": hash_password(
+            user.password
+        ),  # In a real application, hash the password
     }
 
     db_user = User(**user_data)
