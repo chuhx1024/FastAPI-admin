@@ -28,3 +28,30 @@
     source venv/Scripts/activate # Windows
     uvicorn main:app --reload
     ```
+
+### 启动项目
+    - 数据库准备
+        ```
+        1. 拉取数据库镜像
+        docker pull harbor.iluvatar.com.cn:10443/library/mariadb:v0.2-sql
+        2. 启动数据库容器
+        docker run --name mydb -e MYSQL_ROOT_PASSWORD=admin12345 -d harbor.iluvatar.com.cn:10443/library/mariadb:v0.2-sql 
+        3. 创建数据库
+        CREATE DATABASE FastAdmin
+            DEFAULT CHARACTER SET = 'utf8mb4';
+        ```
+    - Python 环境配置
+        ```
+        1. python3 -m venv venv # 创建虚拟环境
+
+        2. source venv/bin/activate # Mac
+           venv/Scripts/activate # Windows
+
+        3. 安装python依赖包
+           poetry install
+        ```
+    - 启动FastAPI
+        ```
+        uvicorn main:app --reload
+        ```
+        
