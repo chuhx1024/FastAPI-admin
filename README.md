@@ -35,7 +35,7 @@
         1. 拉取数据库镜像
         docker pull harbor.iluvatar.com.cn:10443/library/mariadb:v0.2-sql
         2. 启动数据库容器
-        docker run --name mydb -e MYSQL_ROOT_PASSWORD=admin12345 -d harbor.iluvatar.com.cn:10443/library/mariadb:v0.2-sql 
+        sudo docker run --name mydb -e MYSQL_ROOT_PASSWORD=admin12345 -p 3306:3306 -d 524adc4c89c3 
         3. 创建数据库
         CREATE DATABASE FastAdmin
             DEFAULT CHARACTER SET = 'utf8mb4';
