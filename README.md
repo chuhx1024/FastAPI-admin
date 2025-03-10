@@ -44,8 +44,11 @@
         ```
         1. python3 -m venv venv # 创建虚拟环境
 
-        2. source venv/bin/activate # Mac
+        2. 进入虚拟环境
+           source venv/bin/activate # Mac
            venv/Scripts/activate # Windows
+        3. 退出 虚拟环境
+           deactivate
 
         3. 安装python依赖包
            poetry install

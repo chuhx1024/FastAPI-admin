@@ -71,6 +71,7 @@ def get_user(
     db_user = db.query(User).filter(User.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
+    roles = db_user.roles
     return ResponseModel(
         code=200,
         data=dict(
@@ -78,6 +79,7 @@ def get_user(
             id=db_user.id,
             email=db_user.email,
             full_name=db_user.full_name,
+            roles=[{"id": role.id, "rolename": role.rolename} for role in roles],
         ),
         msg="用户获取成功!",
     )
