@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field
+from typing import Optional, List
 
 
 class DeptCreate(BaseModel):
@@ -14,7 +15,5 @@ class DeptResponse(BaseModel):
     id: int
     name: str
     desc: str
-    parent_id: int
-
-    class Config:
-        orm_mode = True
+    parent_id: Optional[int]
+    children: List["DeptResponse"] = []
