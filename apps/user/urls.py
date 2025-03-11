@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from database.database import get_db
 from schemas import ResponseModel
 from .models import User
+from apps.role.models import Role
 from .schemas import UserCreate, UserResponse
 from common.passlib_utils import hash_password
 from common.jwt_utils import get_current_user, oauth2_scheme
@@ -27,6 +28,7 @@ def create_user(
             "email": "johndoe@example.com",
             "full_name": "John Doe",
             "password": "securepassword123",
+            "roles": [1, 2],
         },
     ),
     db: Session = Depends(get_db),
@@ -35,6 +37,10 @@ def create_user(
     :param username: 用户名
     :param email: 邮箱
     """
+    roles = db.query(Role).filter(Role.id.in_(user.roles)).all()
+    if len(roles) != len(user.roles):
+        raise HTTPException(status_code=404, detail="Some roles not found")
+
     user_data = {
         "username": user.username,
         "email": user.email,
@@ -45,6 +51,7 @@ def create_user(
     }
 
     db_user = User(**user_data)
+    db_user.roles = roles
 
     db.add(db_user)
     db.commit()

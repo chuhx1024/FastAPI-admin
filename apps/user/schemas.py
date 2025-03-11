@@ -8,6 +8,7 @@ class UserCreate(BaseModel):
     email: str
     full_name: str
     password: str
+    roles: List[int]
 
 
 class UserResponse(BaseModel):
