@@ -5,11 +5,15 @@ import os
 def activate_venv_and_run_app():
     try:
         # 构建激活虚拟环境的命令
-        activate_cmd = (
-            "venv\\Scripts\\activate.bat"
-            if os.name == "nt"
-            else "source venv/bin/activate"
-        )
+        if os.name == "nt":
+            activate_cmd = "venv\\Scripts\\activate.bat"
+        else:
+            # 使用 . 代替 source 或者显式使用 bash
+            shell = os.getenv("SHELL", "/bin/bash")  # 提供默认值
+            if shell.endswith("sh"):
+                activate_cmd = ". venv/bin/activate"
+            else:
+                activate_cmd = "source venv/bin/activate"
 
         # 启动应用的命令
         start_cmd = ["uvicorn", "main:app", "--reload"]
