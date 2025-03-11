@@ -14,7 +14,7 @@ user = APIRouter()
 
 
 @user.post(
-    "/users/",
+    "/users",
     response_model=ResponseModel[UserResponse],
     summary="新建用户",
 )
@@ -93,7 +93,7 @@ def get_user(
 
 
 @user.get(
-    "/users/",
+    "/users",
     response_model=ResponseModel[list[UserResponse]],
     summary="获取用户列表",
     dependencies=[Depends(oauth2_scheme)],
@@ -102,7 +102,7 @@ def get_users(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    users = db.query(User).all()
+    users = db.query(User).order_by(User.id.desc()).all()
     # user_list = [
     #     dict(
     #         username=user.username,
