@@ -11,11 +11,13 @@ from ..user.models import User
 from fastapi.security import OAuth2PasswordRequestForm
 from common.passlib_utils import verify_password
 from common.jwt_utils import create_access_token
+from .schemas import UserInfoResponse
+from common.jwt_utils import get_current_user, oauth2_scheme
 
-login_router = APIRouter()
+base_router = APIRouter()
 
 
-@login_router.post("/login")
+@base_router.post("/login")
 def login(
     # form_data: LoginRequest = Body(
     #     ...,
@@ -45,11 +47,43 @@ def login(
             data=None,
             msg="密码错误",
         )
-    access_token = create_access_token(data={"sub": user.username})
+    access_token = create_access_token(data={"sub": str(user.id)})
     response_data = {"access_token": access_token, "token_type": "bearer"}
     return TokenResponseModel[LoginResponse](
         code=200,
         data=LoginResponse(**response_data),
         access_token=access_token,
         msg="登录成功成功!",
+    )
+
+
+@base_router.get(
+    "/user_info",
+    response_model=ResponseModel[UserInfoResponse],
+    summary="获取用户信息",
+    dependencies=[Depends(oauth2_scheme)],
+)
+def get_user(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    通过tonken  获取用户信息
+    """
+    db_user = current_user
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    roles = db_user.roles
+    dept = db_user.dept
+    return ResponseModel(
+        code=200,
+        data=dict(
+            username=db_user.username,
+            id=db_user.id,
+            email=db_user.email,
+            full_name=db_user.full_name,
+            roles=[{"id": role.id, "rolename": role.rolename} for role in roles],
+            dept=dept,
+        ),
+        msg="用户获取成功!",
     )
