@@ -17,3 +17,6 @@ class DeptResponse(BaseModel):
     desc: str
     parent_id: Optional[int]
     children: List["DeptResponse"] = []
+
+    class Config:
+        from_attributes = True  # 添加这一行

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Body, Path
 
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from database.database import get_db
 from schemas import ResponseModel
 from .models import User
@@ -29,6 +29,7 @@ def create_user(
             "full_name": "John Doe",
             "password": "securepassword123",
             "roles": [1, 2],
+            "dept_id": 1,
         },
     ),
     db: Session = Depends(get_db),
@@ -48,6 +49,7 @@ def create_user(
         "hashed_password": hash_password(
             user.password
         ),  # In a real application, hash the password
+        "dept_id": user.dept_id,
     }
 
     db_user = User(**user_data)
@@ -102,7 +104,7 @@ def get_users(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(get_db),
 ):
-    users = db.query(User).order_by(User.id.desc()).all()
+    users = db.query(User).options(joinedload(User.dept)).order_by(User.id.desc()).all()
     # user_list = [
     #     dict(
     #         username=user.username,
