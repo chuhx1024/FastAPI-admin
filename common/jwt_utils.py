@@ -17,7 +17,7 @@ def create_access_token(data: dict):
     return encoded_jwt
 
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/login")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="api/base/login")
 
 
 def get_current_user(
