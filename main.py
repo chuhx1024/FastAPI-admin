@@ -8,7 +8,7 @@ from apps.base.urls import base_router
 from apps.dept.urls import dept
 
 # 创建数据库表
-create_tables()
+# create_tables()
 
 app = FastAPI()
 
