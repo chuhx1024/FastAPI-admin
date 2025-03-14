@@ -24,3 +24,9 @@ class UserInfoResponse(BaseModel):
     full_name: str = Field("默认昵称", alias="full_name")
     roles: List[RoleResponse] = Field(default_factory=list)
     dept: Optional[DeptResponse] = Field(default=None)
+
+
+class MenusResponse(BaseModel):
+    username: str
+    id: int
+    menus: list

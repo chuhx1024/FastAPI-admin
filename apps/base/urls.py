@@ -11,7 +11,7 @@ from ..user.models import User
 from fastapi.security import OAuth2PasswordRequestForm
 from common.passlib_utils import verify_password
 from common.jwt_utils import create_access_token
-from .schemas import UserInfoResponse
+from .schemas import UserInfoResponse, MenusResponse
 from common.jwt_utils import get_current_user, oauth2_scheme
 
 base_router = APIRouter()
@@ -82,8 +82,49 @@ def get_user(
             id=db_user.id,
             email=db_user.email,
             full_name=db_user.full_name,
-            roles=[{"id": role.id, "rolename": role.rolename} for role in roles],
+            roles=[
+                {
+                    "id": role.id,
+                    "rolename": role.rolename,
+                    "permission": role.permission,
+                }
+                for role in roles
+            ],
             dept=dept,
+        ),
+        msg="用户获取成功!",
+    )
+
+
+@base_router.get(
+    "/menus",
+    response_model=ResponseModel[MenusResponse],
+    summary="获取用户的权限菜单",
+    dependencies=[Depends(oauth2_scheme)],
+)
+def get_user(
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db),
+):
+    """
+    通过tonken  获取用户信息
+    """
+    db_user = current_user
+    if db_user is None:
+        raise HTTPException(status_code=404, detail="User not found")
+    roles = db_user.roles
+    menus = []
+    for role in roles:
+        menus.extend(role.permission.split(","))
+    # 去重
+    menus = list(set(menus))
+
+    return ResponseModel(
+        code=200,
+        data=dict(
+            username=db_user.username,
+            id=db_user.id,
+            menus=menus,
         ),
         msg="用户获取成功!",
     )
